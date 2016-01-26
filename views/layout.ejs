@@ -17,23 +17,23 @@
 
         <header>
             <h1> Quiz Exams </h1>
-            <nav>
-                <ul>
-                    <li> <a href="/"> Home </a> </li>
+            <div class="navigation">
+                <nav>
+                    <ul>
+                        <li> <a href="/"> Home </a> </li>
 
-                    <li> <a href="/posts">Posts</a> </li>
+                        <li> <a href="/signup"> Registrarse </a> </li>
 
-                    <li> <a href="/posts/search"> Búsqueda </a> </li>
+                        <li> <a href="/login_show"> Login </a> </li>
 
-                    <li> <a href="/users"> Usuarios </a> </li>
-
-                    <li> <a href="/autor"> Autor </a> </li>
-                </ul>
-            </nav>
+                        <li> <a href="/autor"> Autor </a> </li>
+                    </ul>
+                </nav>
+            </div>
 
         </header>
 
-        <!-- Para mostrar los errores sin dejar que se muestre lo demas -->
+        <!-- Para mostrar los errores sin parar de mostar el resto del contenido -->
         <section>
             <% if (messages.info) { %>
                 <article id='flashinfo'>

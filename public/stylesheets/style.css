@@ -25,12 +25,17 @@ h1{
 	text-align: center;
 }
 
-nav{
-	float: left;
-	height: 40px;
+.navigation{
+	display: block;
 	text-align: center;
+}
+
+nav{
+	height: 40px;
+	display: inline-block;
+	margin-left: auto;
+	margin-right: auto;
 	margin-bottom: 1.5%;
-	margin-left: 35%;
 }
 
 nav ul{
@@ -66,11 +71,46 @@ nav ul li a:hover{
 	font-size: 25px;
 }
 
+#form_user{
+	display: block;
+	text-align: center;
+}
+
+form{
+	display: inline-block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.submit{
+	clear: both;
+	float: left;
+	margin-left: 40%;
+	margin-bottom: 25px;
+	margin-top: 15px;
+}
+
+.row_form{
+	clear: both;
+}
+
+.row_form label{
+	margin-top: 10px;
+	float: left;
+}
+
+.row_form input{
+	margin-top: 10px;
+	margin-left: 25px;
+	float: right;
+}
+
 
 /******************************************************************/
 /***************************** Footer *****************************/
 
 footer{
+	margin-top: 5%;
 	width: 100%;
 	float: left;
 	text-align: center;
