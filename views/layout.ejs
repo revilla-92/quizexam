@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <title> Quiz Exams </title>
+
+        <!-- Hoja de estilo -->
+        <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+
+        <!-- Fuente de la pagina -->
+        <link href='https://fonts.googleapis.com/css?family=Ubuntu&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+        
+    </head>
+
+    <body>
+
+        <header>
+            <h1> Quiz Exams </h1>
+            <nav>
+                <ul>
+                    <li> <a href="/"> Home </a> </li>
+
+                    <li> <a href="/posts">Posts</a> </li>
+
+                    <li> <a href="/posts/search"> Búsqueda </a> </li>
+
+                    <li> <a href="/users"> Usuarios </a> </li>
+
+                    <li> <a href="/autor"> Autor </a> </li>
+                </ul>
+            </nav>
+
+        </header>
+
+        <!-- Para mostrar los errores sin dejar que se muestre lo demas -->
+        <section>
+            <% if (messages.info) { %>
+                <article id='flashinfo'>
+                    <h3> Información de interés: </h3>
+                    <ul>
+                        <% for (var i in messages.info) { %>
+                            <li> <%= messages.info[i] %> </li>
+                        <% } %>
+                    </ul>
+                </article>
+            <% } %>
+
+            <% if (messages.success) { %>
+                <article id='flashsuccess'>
+                    <h3>Tareas completadas con éxito:</h3>
+                    <ul>
+                        <% for (var i in messages.success) { %>
+                            <li> <%= messages.success[i] %> </li>
+                        <% } %>
+                    </ul>
+                </article>
+            <% } %>
+
+            <% if (messages.error) { %>
+                <article id='flasherror'>
+                    <h3>Errores encontrados:</h3>
+                    <ul>
+                        <% for (var i in messages.error) { %>
+                            <li> <%= messages.error[i] %> </li>
+                        <% } %>
+                    </ul>
+                </article>
+            <% } %>
+
+        </section>
+
+
+        <section id="container">
+            <%- body %>
+        </section>
+
+
+        <footer>
+            TFG - QuizExam
+        </footer>
+    </body>
+
+</html>

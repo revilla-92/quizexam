@@ -1,0 +1,41 @@
+{
+  "name": "quizexam",
+  "version": "1.0.0",
+  "description": "Project for creating, editing and deleting exams made of questions",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/revilla-92/quizexam.git"
+  },
+  "author": "Daniel Revilla",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/revilla-92/quizexam/issues"
+  },
+  "homepage": "https://github.com/revilla-92/quizexam#readme",
+  "dependencies": {
+    "body-parser": "^1.14.2",
+    "connect": "^3.4.1",
+    "cookie-parser": "^1.4.1",
+    "crypto": "0.0.3",
+    "debug": "^2.2.0",
+    "ejs": "^2.4.1",
+    "express": "^4.13.4",
+    "express-flash": "0.0.2",
+    "express-partials": "^0.3.0",
+    "express-session": "^1.13.0",
+    "method-override": "^2.3.5",
+    "morgan": "^1.6.1",
+    "path": "^0.12.7",
+    "sequelize": "^3.18.0",
+    "static-favicon": "^1.0.2"
+  },
+  "devDependencies": {
+    "babelify": "^6.4.0",
+    "browserify": "^11.2.0",
+    "sqlite3": "^3.1.1"
+  }
+}
