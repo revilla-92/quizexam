@@ -56,6 +56,41 @@ nav ul li a:hover{
 	color: #99FFFF;
 }
 
+section{
+	float: left;
+	width: 100%;
+	margin-bottom: -2%;
+}
+
+/******************************************************************/
+/*********************** Error Contenedor *************************/
+
+#error_container{
+	float: left;
+	clear: both;
+	width: 100%;
+}
+
+.title_message{
+	margin-left: 15%;
+}
+
+#error_message{
+	color: red;
+}
+
+#info_message{
+	color: yellow;
+}
+
+#success_message{
+	color: green;
+}
+
+.lista_mensajes{
+	margin-left: 20%;
+}
+
 
 /******************************************************************/
 /*************************** Contenedor ***************************/

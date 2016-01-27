@@ -33,7 +33,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser('Quiz Exam'));
-app.use(session());
+app.use(session({resave: false, saveUninitialized: false, secret: "whatever"}));
 app.use(methodOverride('_method'));
 
 // Indicamos que todos los ficheros estaticos van a encontrarse en la carpeta public.
@@ -52,12 +52,24 @@ app.locals.escapeText =  function(text) {
         .replace(/\n/g, '<br>');
 };
 
+
+// IMPORTANTE: Uso de express-session para manejar las sesiones.
+app.use(function(req, res, next) {
+
+    // Hacer visible req.session en las vistas.
+    res.locals.session = req.session;
+    next();
+
+});
+
+
 // Captura el error 404 (not found) y lo envia al manejador de errores.
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
     next(err);
 });
+
 
 /******************************* Error handlers ***********************************/
 

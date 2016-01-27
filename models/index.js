@@ -1,32 +1,42 @@
-/*
 // Cargamos los modulos que necesitamos.
 var path = require('path');
 
 // Cargar Modelo ORM
 var Sequelize = require('sequelize');
 
-// Postgres DATABASE_URL = postgres://user:passwd@host:port/database
-// SQLite   DATABASE_URL = sqlite://:@:/
-var url = process.env.DATABASE_URL.match(/(.*)\:\/\/(.*?)\:(.*)@(.*)\:(.*)\/(.*)/);
-var DB_name  = (url[6]||null);
-var user     = (url[2]||null);
-var pwd      = (url[3]||null);
-var protocol = (url[1]||null);
-var dialect  = (url[1]||null);
-var port     = (url[5]||null);
-var host     = (url[4]||null);
-var storage  = process.env.DATABASE_STORAGE;
-
 // Usar BBDD SQLite:
-var sequelize = new Sequelize(DB_name, user, pwd, 
+var sequelize = new Sequelize(null, null, null, 
 	{
-		dialect:  protocol,
-		protocol: protocol,
-		port:     port,
-		host:     host,
-		storage:  storage,  // solo SQLite (.env)
-		omitNull: true      // solo Postgres
+		dialect:  "sqlite",
+		storage:  "quizexam.sqlite",
 	}      
 );
 
-*/
+// Importamos la(s) definiciones de las BBDD (clases)
+var User = sequelize.import(path.join(__dirname,'user'));
+
+
+// Exportamos las clases de los distintos modelos.
+exports.User = User;
+
+// Crear las tablas en la base de datos que no se hayan creado aun. En un futuro lo haremos con migraciones.
+sequelize.sync().then(function(){
+
+	// Si se cumple la promesa de que se sincroniza la tabla entonces.
+	User.count().then(function (count){
+
+		// La tabla se inicializa solo si está vacía.
+		if(count === 0) {
+
+			// Creamos dos usuarios por defecto.
+	    	User.bulkCreate( 
+	    		[
+	    			{username: 'admin', email: 'admin@admin.com', password: '1234', isAdmin: true},
+	    			{username: 'user', email: 'user@user.com', password: '1234'}
+	    		]
+	    	).then(function(){
+	    		console.log("Base de Datos de Usuarios: Inicializada.");
+	    	});
+		};
+	});
+});

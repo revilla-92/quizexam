@@ -22,9 +22,9 @@
                     <ul>
                         <li> <a href="/"> Home </a> </li>
 
-                        <li> <a href="/signup"> Registrarse </a> </li>
+                        <li> <a href="/users"> Registrarse </a> </li>
 
-                        <li> <a href="/login_show"> Login </a> </li>
+                        <li> <a href="/login"> Login </a> </li>
 
                         <li> <a href="/autor"> Autor </a> </li>
                     </ul>
@@ -34,11 +34,11 @@
         </header>
 
         <!-- Para mostrar los errores sin parar de mostar el resto del contenido -->
-        <section>
+        <section id="error_container">
             <% if (messages.info) { %>
                 <article id='flashinfo'>
-                    <h3> Información de interés: </h3>
-                    <ul>
+                    <h3 class="title_message" id="info_message"> Información de interés: </h3>
+                    <ul class="lista_mensajes">
                         <% for (var i in messages.info) { %>
                             <li> <%= messages.info[i] %> </li>
                         <% } %>
@@ -48,8 +48,8 @@
 
             <% if (messages.success) { %>
                 <article id='flashsuccess'>
-                    <h3>Tareas completadas con éxito:</h3>
-                    <ul>
+                    <h3 class="title_message" id="success_message">Tareas completadas con éxito:</h3>
+                    <ul class="lista_mensajes">
                         <% for (var i in messages.success) { %>
                             <li> <%= messages.success[i] %> </li>
                         <% } %>
@@ -59,15 +59,14 @@
 
             <% if (messages.error) { %>
                 <article id='flasherror'>
-                    <h3>Errores encontrados:</h3>
-                    <ul>
+                    <h3 class="title_message" id="error_message">Errores encontrados:</h3>
+                    <ul class="lista_mensajes">
                         <% for (var i in messages.error) { %>
                             <li> <%= messages.error[i] %> </li>
                         <% } %>
                     </ul>
                 </article>
             <% } %>
-
         </section>
 
 
