@@ -18,7 +18,7 @@ var Quiz = React.createClass({
 					<input id="answer" placeholder="Respuesta" ref={(ref) => this.answerInput = ref} />
 				</div>
 
-				<button id="botonAddQuiz" type="reset" onClick={this.addQuestionClick}> Añadir Quiz </button>
+				<button id="botonAddQuiz" type="reset" onClick={this.addQuestionClick}> Crear Quiz </button>
 			</form>
 		)
 	}

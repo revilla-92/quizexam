@@ -33,7 +33,7 @@ var App = React.createClass({
 			<div>
 				<Cabecera numQuizes={this.state.numQuizes} />
 				<Quiz />
-				<Exam quizExam={this.state.quizExam} tableIsVisible={this.state.tableIsVisible} />
+				<Exam quizExam={this.state.quizExam} tableIsVisible={this.state.tableIsVisible} numQuizes={this.state.numQuizes} />
 			</div>
 		)
 	}

@@ -60,20 +60,20 @@ exports.create = function(req, res, next) {
 
 				// Si no hay errores y el usuario no existe entonces lo guardamos.
 				user.save()
-					.then(function(user){
-						console.log('Usuario: ' + user.login + ' creado con éxito.');
-						req.flash('success', 'Usuario: ' + user.login + ' creado con éxito.');
-						res.render('/');
-					})
-					.catch(Sequelize.ValidationError, function(error){
-						console.log("Errores de validación:", error);
-						for (var i in error.errors) {
-							console.log('Error en el campo:', error.errors[i].value);
-						};
-					})
-					.catch(function(){
-						console.log("Error:", error);
-					});
+				.then(function(user){
+					console.log('Usuario: ' + user.login + ' creado con éxito.');
+					req.flash('success', 'Usuario: ' + user.login + ' creado con éxito.');
+					res.render('/');
+				})
+				.catch(Sequelize.ValidationError, function(error){
+					console.log("Errores de validación:", error);
+					for (var i in error.errors) {
+						console.log('Error en el campo:', error.errors[i].value);
+					};
+				})
+				.catch(function(){
+					console.log("Error:", error);
+				});
 			}
 		})
 		.catch(function(error){
@@ -87,7 +87,7 @@ exports.create = function(req, res, next) {
  */
 exports.index = function (req, res, next) {
 
-	models.User.findAll({order: ['login']})
+	models.User.findAll()
 	.then(function(users){
 		res.render('users/index', {
 			users: users
@@ -97,6 +97,8 @@ exports.index = function (req, res, next) {
 		console.log("Error:", error)
 	});
 };
+
+
 /********************************************************************/
 /********************************************************************/
 

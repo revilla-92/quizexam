@@ -1,0 +1,18 @@
+<h2> Quizes Creados. </h2>
+
+<article>
+    <table>
+    <tr>
+        <th> Pregunta </th>
+        <th> Respuesta </th>
+    </tr>
+
+<% for (var i in quizes) { %>
+    <tr>
+        <td> <%= quizes[i].pregunta %> </td>
+        <td> <%= quizes[i].respuesta %> </td>
+    </tr>
+<% } %>
+
+    </table>
+</article>

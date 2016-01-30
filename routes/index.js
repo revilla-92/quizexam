@@ -61,7 +61,10 @@ router.get('/users', userController.index);
 router.get('/quizes/new',  quizController.show);
 
 // Crear los quizes a partir de la aplicacion de Flux.
-router.post('quizes/new', quizController.create);
+router.post('/quizes/new', quizController.create);
+
+// Mostrar todos los quizes creados hasta el momento.
+router.get('/quizes', quizController.index);
 
 
 /*********************************************************************/

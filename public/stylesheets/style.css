@@ -160,10 +160,6 @@ th{
 	padding-bottom: 10px;
 }
 
-#titleQuiz{
-	margin-left: 8%;
-}
-
 #contenedor{
 	float: left;
 	margin-left: 8%;
@@ -221,6 +217,12 @@ th{
 	clear: both;
 	float: left;
 	font-size: 5px;
+}
+
+#formUploadQuizes{
+	width: 100%;
+	float: left;
+	margin-top: 20px;
 }
 
 

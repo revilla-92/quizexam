@@ -1,9 +1,8 @@
 // Definicion de la clase User:
 
 module.exports = function(sequelize, DataTypes) {
-    return sequelize.define('User',
-    { 
-        login: {
+  return sequelize.define('User',
+      { login: {
             type: DataTypes.STRING,
             validate: {
                 notEmpty: { msg: "El campo login no puede estar vacío" }
@@ -22,6 +21,7 @@ module.exports = function(sequelize, DataTypes) {
         isAdmin: {
             type: DataTypes.BOOLEAN,
             defaultValue: false
-        }    
+        }
+        
     });
 }
