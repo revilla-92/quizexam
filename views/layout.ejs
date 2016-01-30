@@ -5,8 +5,15 @@
         <meta charset="utf-8">
         <title> Quiz Exams </title>
 
+        <!-- Importando estos dos scripts no necesitaremos instalarlos con npm pero necesitaremos conexion a internet. -->
+        <script src="https://fb.me/react-0.14.0.js"></script>
+        <script src="https://fb.me/react-dom-0.14.0.js"></script>
+
         <!-- Hoja de estilo -->
         <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+
+        <!-- Estilo por defecto de las tablas que vienen en el modulo fixed-data-table. -->
+        <link rel="stylesheet" href="/stylesheets/fixed-data-table.css">
 
         <!-- Fuente de la pagina -->
         <link href='https://fonts.googleapis.com/css?family=Ubuntu&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
@@ -22,9 +29,13 @@
                     <ul>
                         <li> <a href="/"> Home </a> </li>
 
-                        <li> <a href="/users"> Registrarse </a> </li>
+                        <li> <a href="/users/new"> Registrarse </a> </li>
 
                         <li> <a href="/login"> Login </a> </li>
+
+                        <li> <a href="/quizes/new"> Crear Quizes </a> </li>
+
+                        <li> <a href="/users"> Usuarios </a> </li>
 
                         <li> <a href="/autor"> Autor </a> </li>
                     </ul>

@@ -1,0 +1,18 @@
+<h2> Usuarios Registrados. </h2>
+
+<article>
+    <table>
+    <tr>
+        <th> Login </th>
+        <th> Email </th>
+    </tr>
+
+<% for (var i in users) { %>
+    <tr>
+        <td> <%= users[i].login %> </td>
+        <td> <%= users[i].email %> </td>
+    </tr>
+<% } %>
+
+    </table>
+</article>

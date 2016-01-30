@@ -4,6 +4,7 @@ var router = express.Router();
 // Ponemos los controladores para las peticiones que se pueden realizar.
 var userController = require('../controllers/user_controller');
 var sessionController = require('../controllers/session_controller');
+var quizController = require('../controllers/quiz_controller');
 
 
 /************************** GET Home Page. ***************************/
@@ -33,9 +34,6 @@ router.get('/login',  sessionController.new);
 // Enviar formulario para crear la sesión.
 router.post('/login', sessionController.create);
 
-// Destruir la sesión actual.
-// router.get('/logout', sessionController.destroy);
-
 /*********************************************************************/
 /*********************************************************************/
 
@@ -44,17 +42,32 @@ router.post('/login', sessionController.create);
 /*********************************************************************/
 
 // Renderiza el formulario para crear un nuevo usuario.
-router.get('/users', userController.index);
+router.get('/users/new', userController.show);
 
 // Ejecuta el POST de crear un usuario nuevo.
-router.post('/users', userController.create);
+router.post('/users/new', userController.create);
+
+// Enseña todos los usuarios que hay creados.
+router.get('/users', userController.index);
 
 /*********************************************************************/
 /*********************************************************************/
+
+
+/*********************** Rutas de los Quizes  ************************/
+/*********************************************************************/
+
+// Obtener la vista hecha con flux para hacer quizes.
+router.get('/quizes/new',  quizController.show);
+
+// Crear los quizes a partir de la aplicacion de Flux.
+router.post('quizes/new', quizController.create);
+
+
+/*********************************************************************/
+/*********************************************************************/
+
 
 // Finalmente exportamos el enrutador creado a la aplicacion.
 module.exports = router;
-
-
-
 

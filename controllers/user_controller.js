@@ -17,7 +17,7 @@ function isEmpty(value){
 /* 
  * Con este metodo renderizamos la vista del formulario para crear un nuevo usuario.
  */
-exports.index = function(req, res, next) {
+exports.show = function(req, res, next) {
 	res.render('users/new');
 };
 
@@ -82,6 +82,21 @@ exports.create = function(req, res, next) {
 	}
 };
 
+/*
+ * Enseñamos todos los usuarios registrados en el sistema.
+ */
+exports.index = function (req, res, next) {
+
+	models.User.findAll({order: ['login']})
+	.then(function(users){
+		res.render('users/index', {
+			users: users
+		});
+	})
+	.catch(function(error){
+		console.log("Error:", error)
+	});
+};
 /********************************************************************/
 /********************************************************************/
 

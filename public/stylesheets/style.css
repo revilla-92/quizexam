@@ -140,12 +140,96 @@ form{
 	float: right;
 }
 
+article{
+	display: inline-block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+table{
+	float: left;
+	width: 100%;
+}
+
+td{
+	padding-left: 30px;
+}
+
+th{
+	padding-left: 30px;
+	padding-bottom: 10px;
+}
+
+#titleQuiz{
+	margin-left: 8%;
+}
+
+#contenedor{
+	float: left;
+	margin-left: 8%;
+}
+
+#contenedor form{
+	float: left;
+	clear: both;
+}
+
+#pregunta_quiz{
+	float: left;
+	width: 100%;
+	margin-bottom: 10px;
+	margin-left: 30%;
+}
+
+#pregunta_quiz label{
+	float: left;
+}
+
+#pregunta_quiz input{
+	float: right;
+	width: 300px;
+}
+
+#respuesta_quiz{
+	float: left;
+	width: 100%;
+	margin-bottom: 10px;
+	margin-left: 30%;
+}
+
+#respuesta_quiz label{
+	float: left;
+}
+
+#respuesta_quiz input{
+	float: right;
+	width: 300px;
+}
+
+#botonAddQuiz{
+	margin-left: 70%;
+	float: left;
+	margin-bottom: 25px;
+}
+
+#tabla_Quiz{
+	float: left;
+	margin-left: 30%;
+}
+
+#noQuiz{
+	clear: both;
+	float: left;
+	font-size: 5px;
+}
+
 
 /******************************************************************/
 /***************************** Footer *****************************/
 
 footer{
 	margin-top: 5%;
+	margin-bottom: 5%;
 	width: 100%;
 	float: left;
 	text-align: center;

@@ -14,10 +14,12 @@ var sequelize = new Sequelize(null, null, null,
 
 // Importamos la(s) definiciones de las BBDD (clases)
 var User = sequelize.import(path.join(__dirname,'user'));
+var Quiz = sequelize.import(path.join(__dirname,'quiz'));
 
 
 // Exportamos las clases de los distintos modelos.
 exports.User = User;
+exports.Quiz = Quiz;
 
 // Crear las tablas en la base de datos que no se hayan creado aun. En un futuro lo haremos con migraciones.
 sequelize.sync().then(function(){
@@ -31,8 +33,8 @@ sequelize.sync().then(function(){
 			// Creamos dos usuarios por defecto.
 	    	User.bulkCreate( 
 	    		[
-	    			{username: 'admin', email: 'admin@admin.com', password: '1234', isAdmin: true},
-	    			{username: 'user', email: 'user@user.com', password: '1234'}
+	    			{login: 'admin', email: 'admin@admin.com', password: '1234', isAdmin: true},
+	    			{login: 'user', email: 'user@user.com', password: '1234'}
 	    		]
 	    	).then(function(){
 	    		console.log("Base de Datos de Usuarios: Inicializada.");
