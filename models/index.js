@@ -38,32 +38,7 @@ sequelize.sync().then(function(){
 	    		]
 	    	).then(function(){
 	    		console.log("Base de Datos de Usuarios: Inicializada.");
-	    	})
-	    	.catch(function(error){
-				console.log('Error:', error);
-			});
+	    	});
 		};
 	});
-
-	// Si se cumple la promesa de que se sincroniza la tabla entonces.
-	Quiz.count().then(function (count){
-
-		// La tabla se inicializa solo si está vacía.
-		if(count === 0) {
-
-			// Creamos dos usuarios por defecto.
-	    	Quiz.bulkCreate( 
-	    		[
-	    			{pregunta: 'Capital Italia', respuesta: 'Roma'},
-	    			{pregunta: 'Capital España', respuesta: 'Madrid'}
-	    		]
-	    	).then(function(){
-	    		console.log("Base de Datos de Quizes: Inicializada.");
-	    	})
-	    	.catch(function(error){
-				console.log('Error:', error);
-			});
-		};
-	});
-
 });

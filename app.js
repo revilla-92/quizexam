@@ -18,7 +18,7 @@ var routes = require('./routes/index');
 var app = express();
 
 // Indicamos que el motor de las vistas va a ser .ejs y que se encontrara en el directorio views.
-app.set('views', path.join(__dirname, '/views'));
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 // Indicamos en nuestra aplicacion vamos a usar express-partials y flash para los mensajes de error.
@@ -44,8 +44,8 @@ app.use('/', routes);
 
 // Helper estatico:
 app.locals.escapeText =  function(text) {
-	return String(text)
-    	.replace(/&(?!\w+;)/g, '&amp;')
+    return String(text)
+        .replace(/&(?!\w+;)/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
