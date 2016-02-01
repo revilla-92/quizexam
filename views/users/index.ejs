@@ -3,15 +3,42 @@
 <article>
     <table>
     <tr>
-        <th> Login </th>
+        <th> login </th>
         <th> Email </th>
+        <% if(session.user){ %> 
+            <th> Eliminar usuario </th> 
+        <% } %>
+        <% if(session.user){ %> 
+            <th> Editar usuario </th> 
+        <% } %>
     </tr>
 
 <% for (var i in users) { %>
     <tr>
         <td> <%= users[i].login %> </td>
         <td> <%= users[i].email %> </td>
+        <% if((session.user.isAdmin) && (users[i].id != session.user.id)){ %> 
+            <td>
+                <form method='post' action='/users/delete/<%= users[i].id %>' >
+                    <input type='submit' value='Eliminar Usuario' />
+                </form>
+            </td> 
+        <% } else { %>
+            <% if(session.user.id === users[i].id && !session.user.isAdmin) { %>
+                <td>
+                    <form method='post' action='/users/delete/<%= users[i].id %>' >
+                        <input type='submit' value='Eliminar Usuario' />
+                    </form>
+                </td>
+            <% } else { %>
+                <td> </td>
+            <% } %>
+        <% } %>
+        <% if (session.user && session.user.id == users[i].id || session.user.isAdmin) {%>
+            <td> <a href="/users/edit/<%= users[i].id %>"> Editar </a> </td>
+        <% } %>
     </tr>
+    
 <% } %>
 
     </table>

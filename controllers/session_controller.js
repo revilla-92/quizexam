@@ -16,7 +16,7 @@ function isEmpty(value){
 /****************************** Rutas ******************************/
 /*******************************************************************/
 
-/* Formulario para hacer login: 
+/* Formulario para hacer login (GET): 
  *
  * Renderiza la vista del formulario para hacer login.
  */
@@ -25,6 +25,12 @@ exports.new = function(req, res) {
 };
 
 
+/* Middleware Create (POST): 
+ *
+ * Recoge los parametros del formulario para hacer login y los comprueba con la BBDD de los usuarios.
+ * Si el usuario no existe o bien se ha introducido erroneamente la contraseña se notifica el error.
+ * Si pasa ambas comprobaciones se logea correctamente y se crea la sesion (req.session.user).
+ */
 exports.create = function(req, res){
 
     // Comprobamos que primero se hayan introducido los parametros.
@@ -53,7 +59,7 @@ exports.create = function(req, res){
                     var maxTime = new Date().getTime() + 30000;
 
                     // IMPORTANTE: creo req.session.user. Solo guardo algunos campos del usuario en la sesion.
-                    req.session.user = {id:user.id, login:user.login, expiration:maxTime, userLogged:true};
+                    req.session.user = {id:user.id, login:user.login, expiration:maxTime, isAdmin:user.isAdmin};
 
                     // Redirecciono a la pagina principal.
                     res.redirect('/');
@@ -78,6 +84,85 @@ exports.create = function(req, res){
         });
     }
 }
+
+
+/* Middleware Destroy (GET):
+ * 
+ * Destruye la sesion actual dando un mensaje de que se ha realizado correctamente.
+ */
+exports.destroy = function(req, res, next){
+    delete req.session.user;
+    req.flash('success', 'Se ha deslogeado correctamente.');
+    res.redirect("/"); 
+}
+
+
+/*******************************************************************/
+/*******************************************************************/
+
+
+/************************** Middlewares ****************************/
+/*******************************************************************/
+
+
+/* Middleware: Se requiere hacer login:
+ *
+ * Si el usuario ya hizo login anteriormente entonces existira  el objeto user en req.session, 
+ * por lo que continuo con los demas middlewares o rutas.
+ * Si no existe req.session.user, entonces es que aun no he hecho login, por lo que me redireccionan a una pantalla de login. 
+ */
+exports.loginRequired = function (req, res, next) {
+    if (req.session.user) {
+        next();
+    } else {
+        req.flash('error', 'Debe de estar logeado para acceder a ese contenido.');
+        res.redirect('/');
+    }
+};
+
+
+/* Middleware: Se requiere ser admin:
+ *
+ * Se comprueba que el usuario en cuestion es el administrados para poder realizar unas determinadas acciones.
+ */
+exports.isAdmin = function (req, res, next) {
+    if (req.session.user.isAdmin){
+        next();
+    } else {
+        req.flash('error', 'Debe de ser Administrados para realizar dicha acción.');
+        res.redirect('/');
+    }
+}
+
+
+/* Middleware Autologout:
+ * 
+ * Actualiza el tiempo de expiración de la sesión cada vez que se carga una página.
+ */
+exports.autologout = function (req, res, next) {
+
+    console.log("Entramos en el autologout");
+
+    if (req.session.user) {
+
+        var actualMoment = new Date().getTime();
+
+        if(actualMoment < req.session.user.expiration){
+            req.session.user.expiration = new Date().getTime()+3000000;
+            console.log("Cuanta reiniciada");
+            next(); 
+        }else{
+            delete req.session.user;
+            req.flash('error', 'Su sesion ha expirado');
+            console.log("Sesion caducada");
+            res.redirect("/login");
+            next();
+        }
+    }else{
+        next();
+        console.log("Usuario no conectado");
+    }
+};
 
 
 /*******************************************************************/

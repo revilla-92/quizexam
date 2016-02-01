@@ -41,4 +41,5 @@ sequelize.sync().then(function(){
 	    	});
 		};
 	});
+
 });

@@ -54,14 +54,8 @@ exports.create = function(req, res, next){
 		n++;
 	}
 
-	console.log(preguntas);
-	console.log(respuestas);
-
 	// Ahora vamos recorriendo ambos arrays e introduciendo dichos datos en la BBDD.
-	for (j = 0; j < numQuizes; j++){
-
-		console.log(preguntas[j]);
-		console.log(respuestas[j]);
+	for (j = 0; j < numQuizes; j++){2
 
 		var quiz = models.Quiz.build({
 			pregunta: preguntas[j],
@@ -77,7 +71,7 @@ exports.create = function(req, res, next){
 		});
 	}
 
-	res.render('/quizes');
+	res.redirect('/quizes');
 
 }
 

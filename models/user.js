@@ -2,11 +2,11 @@
 
 module.exports = function(sequelize, DataTypes) {
     return sequelize.define('User',
-    { 
+    {
         login: {
             type: DataTypes.STRING,
             validate: {
-                notEmpty: { msg: "El campo login no puede estar vacío" }
+                notEmpty: { msg: "El campo username no puede estar vacío" }
             }
         },
         email: {

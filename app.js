@@ -39,6 +39,16 @@ app.use(methodOverride('_method'));
 // Indicamos que todos los ficheros estaticos van a encontrarse en la carpeta public.
 app.use(express.static(path.join(__dirname, 'public')));
 
+// IMPORTANTE: Uso de express-session para manejar las sesiones.
+app.use(function(req, res, next) {
+
+    // Hacer visible req.session en las vistas.
+    res.locals.session = req.session;
+    next();
+
+});
+
+
 // Indicamos la página por defecto que se mostrara al arrancar la aplicacion.
 app.use('/', routes);
 
@@ -51,17 +61,6 @@ app.locals.escapeText =  function(text) {
         .replace(/"/g, '&quot;')
         .replace(/\n/g, '<br>');
 };
-
-
-// IMPORTANTE: Uso de express-session para manejar las sesiones.
-app.use(function(req, res, next) {
-
-    // Hacer visible req.session en las vistas.
-    res.locals.session = req.session;
-    next();
-
-});
-
 
 // Captura el error 404 (not found) y lo envia al manejador de errores.
 app.use(function(req, res, next) {

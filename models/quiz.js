@@ -1,7 +1,7 @@
 // Definicion de la clase Quiz:
 
 module.exports = function(sequelize, DataTypes) {
-    return sequelize.define('User',
+    return sequelize.define('Quiz',
     { 
         pregunta: {
             type: DataTypes.STRING,

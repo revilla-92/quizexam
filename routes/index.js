@@ -29,10 +29,19 @@ router.get('/autor', function(req, res) {
 /*********************************************************************/
 
 // Obtener el formulario a rellenar para hacer login.
-router.get('/login',  sessionController.new);
+router.get('/login',
+	sessionController.new
+);
 
 // Enviar formulario para crear la sesión.
-router.post('/login', sessionController.create);
+router.post('/login',
+	sessionController.create
+);
+
+// Destruye la session.
+router.get('/logout',
+	sessionController.destroy
+);
 
 /*********************************************************************/
 /*********************************************************************/
@@ -42,13 +51,43 @@ router.post('/login', sessionController.create);
 /*********************************************************************/
 
 // Renderiza el formulario para crear un nuevo usuario.
-router.get('/users/new', userController.show);
+router.get('/users/new',
+	userController.show
+);
 
 // Ejecuta el POST de crear un usuario nuevo.
-router.post('/users/new', userController.create);
+router.post('/users/new',
+	userController.create
+);
 
 // Enseña todos los usuarios que hay creados.
-router.get('/users', userController.index);
+router.get('/users',
+	sessionController.loginRequired,
+	sessionController.autologout,
+	userController.index
+);
+
+// Elimina a un usuario, solo si es administrador.
+router.post('/users/delete/:userid([0-9]+)',
+	sessionController.autologout,
+	sessionController.loginRequired,
+	sessionController.isAdmin,
+	userController.destroy
+);
+
+// Enseña la vista para editar un usuario.
+router.get('/users/edit/:userid([0-9]+)',
+	sessionController.autologout,
+	sessionController.loginRequired,
+	userController.edit
+);
+
+// Edita un usuario.
+router.post('/users/edit/:userid([0-9]+)',
+	sessionController.autologout,
+	sessionController.loginRequired,
+	userController.update
+);
 
 /*********************************************************************/
 /*********************************************************************/
@@ -58,13 +97,25 @@ router.get('/users', userController.index);
 /*********************************************************************/
 
 // Obtener la vista hecha con flux para hacer quizes.
-router.get('/quizes/new',  quizController.show);
+router.get('/quizes/new',
+	sessionController.loginRequired,
+	sessionController.autologout,
+	quizController.show
+);
 
 // Crear los quizes a partir de la aplicacion de Flux.
-router.post('/quizes/new', quizController.create);
+router.post('/quizes/new',
+	sessionController.loginRequired,
+	sessionController.autologout,
+	quizController.create
+);
 
 // Mostrar todos los quizes creados hasta el momento.
-router.get('/quizes', quizController.index);
+router.get('/quizes',
+	sessionController.loginRequired,
+	sessionController.autologout,
+	quizController.index
+);
 
 
 /*********************************************************************/

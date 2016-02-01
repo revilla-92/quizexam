@@ -33,11 +33,15 @@
 
                         <li> <a href="/login"> Login </a> </li>
 
-                        <li> <a href="/quizes/new"> Crear Quizes </a> </li>
+                        <% if(session.user){ %>
+                            <li> <a href="/quizes/new"> Crear Quizes </a> </li>
 
-                        <li> <a href="/quizes"> Quizes </a> </li>
+                            <li> <a href="/quizes"> Quizes </a> </li>
 
-                        <li> <a href="/users"> Usuarios </a> </li>
+                            <li> <a href="/users"> Usuarios </a> </li>
+
+                            <li> <a href="/logout"> Logout </a> </li>
+                        <% } %>
 
                         <li> <a href="/autor"> Autor </a> </li>
                     </ul>

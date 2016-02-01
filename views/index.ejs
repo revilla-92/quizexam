@@ -1,1 +1,1 @@
-<p> Bienvenido a Quiz Exam. </p>
+<p> Bienvenido a Quiz Exam <% if(session.user){ %> <%= session.user.login %> <% } %> </p>
