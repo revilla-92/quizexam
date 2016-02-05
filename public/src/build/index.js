@@ -26029,9 +26029,9 @@ var Quiz = React.createClass({
 						null,
 						" Pregunta: "
 					),
-					React.createElement("input", { ref: function (ref) {
+					React.createElement("input", { id: "pregunta", placeholder: this.props.pregunta, ref: function (ref) {
 							return _this.questionInput = ref;
-						}, id: "pregunta", value: this.props.pregunta })
+						} })
 				),
 				React.createElement(
 					"div",
@@ -26041,9 +26041,9 @@ var Quiz = React.createClass({
 						null,
 						" Respuesta: "
 					),
-					React.createElement("input", { ref: function (ref) {
+					React.createElement("input", { id: "answer", placeholder: this.props.respuesta, ref: function (ref) {
 							return _this.answerInput = ref;
-						}, id: "answer", value: this.props.respuesta })
+						} })
 				),
 				React.createElement(
 					"button",

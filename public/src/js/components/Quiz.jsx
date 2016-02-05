@@ -15,12 +15,12 @@ var Quiz = React.createClass({
 				<form>
 					<div id="pregunta_quiz" >
 						<label> Pregunta: </label>
-						<input ref={(ref) => this.questionInput = ref} id="pregunta" value={this.props.pregunta} /> 
+						<input id="pregunta" placeholder={this.props.pregunta} ref={(ref) => this.questionInput = ref} /> 
 					</div>
 
 					<div id="respuesta_quiz" >
 						<label> Respuesta: </label>
-						<input ref={(ref) => this.answerInput = ref} id="answer" value={this.props.respuesta} /> 
+						<input id="answer" placeholder={this.props.respuesta} ref={(ref) => this.answerInput = ref} /> 
 					</div>
 
 					<button id="botonAddQuiz" type="reset" onClick={this.updateQuestionClick} > Update Quiz </button>
