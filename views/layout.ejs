@@ -30,14 +30,18 @@
                     <ul>
                         <li> <a href="/"> Home </a> </li>
 
-                        <li> <a href="/users/new"> Registrarse </a> </li>
-
-                        <li> <a href="/login"> Login </a> </li>
+                        <% if(!session.user){ %>
+                            <li> <a href="/users/new"> Registrarse </a> </li>
+                            
+                            <li> <a href="/login"> Login </a> </li>
+                        <% } %>
 
                         <% if(session.user){ %>
                             <li> <a href="/quizes/new"> Crear Quizes </a> </li>
 
                             <li> <a href="/quizes"> Quizes </a> </li>
+
+                            <li> <a href="/exams"> Exámenes </a> </li>
 
                             <li> <a href="/users"> Usuarios </a> </li>
 

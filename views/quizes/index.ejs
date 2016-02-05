@@ -5,12 +5,36 @@
     <tr>
         <th> Pregunta </th>
         <th> Respuesta </th>
+        <% if(session.user){ %> 
+            <th> Eliminar Quiz </th> 
+        <% } %>
+        <% if(session.user){ %> 
+            <th> Editar Quiz </th> 
+        <% } %>
     </tr>
 
 <% for (var i in quizes) { %>
     <tr>
         <td> <%= quizes[i].pregunta %> </td>
         <td> <%= quizes[i].respuesta %> </td>
+        <% if((session.user.isAdmin) || (quizes[i].UserId == session.user.id)){ %> 
+            <td>
+                <form method='post' action='/quizes/delete/<%= quizes[i].id %>' >
+                    <input type='submit' value='Eliminar Quiz' />
+                </form>
+            </td> 
+        <% } else { %>
+            <td> </td>
+        <% } %>
+        <% if((session.user.isAdmin) || (quizes[i].UserId == session.user.id)){ %> 
+            <td>
+                <form method='get' action='/quizes/edit/<%= quizes[i].id %>' >
+                    <input type='submit' value='Editar Quiz' />
+                </form>
+            </td> 
+        <% } else { %>
+            <td> </td>
+        <% } %>
     </tr>
 <% } %>
 

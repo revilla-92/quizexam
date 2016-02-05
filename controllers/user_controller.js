@@ -179,8 +179,6 @@ exports.index = function (req, res, next) {
  */
  exports.update = function (req, res, next) {
 
- 	console.log(req.params.userid);
-
  	// Si algun campo esta vacio sacamos un error y sino actualizamos el usuario con los datos pasados.
 	if ( isEmpty(req.body.login) || isEmpty(req.body.password) || isEmpty(req.body.email) ) {
 		console.log('No se ha introducido todos los campos, que son obligatorios.');
@@ -198,14 +196,48 @@ exports.index = function (req, res, next) {
 
 	// Actualizamos el usuario.
 	}else{
-		
 
+		models.User.find({where: {id: req.params.userid}})
+		.then(function(userParaEliminar){
+			userParaEliminar.destroy()
+			.then(function(){
+				console.log("Usuario en proceso de actualizarse");
+			})
+			.catch(function(error){
+				console.log(error);
+			});
+		})
+		.catch(function(error){
+			console.log("Error:", error);
+		});
 
-	}
+		var user = models.User.build({
+			login: req.body.login,
+			email: req.body.email,
+			password: req.body.password,
+			isAdmin: req.session.user.isAdmin
+        });
 
- 	
+        // Si no hay errores y el usuario no existe entonces lo guardamos.
+		user.save()
+		.then(function(user){
 
- }
+			console.log('Usuario: ' + user.login + ' actualizado con éxito.');
+			req.flash('success', 'Usuario: ' + user.login + ' actualizado con éxito.');
+
+			// Tiempo maximo que puede estar la sesion establecida.
+            var maxTime = new Date().getTime() + 30000;
+
+            // IMPORTANTE: creo req.session.user. Solo guardo algunos campos del usuario en la sesion.
+            req.session.user = {id:user.id, login:user.login, expiration:maxTime, isAdmin:user.isAdmin};
+
+			res.redirect('/');
+		})
+		.catch(function(){
+			console.log("Error:", error);
+		});
+	} 	
+}
 
 /********************************************************************/
 /********************************************************************/

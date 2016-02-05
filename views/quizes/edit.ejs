@@ -1,0 +1,21 @@
+<h2> Edite su Quiz: </h2>
+
+<div id="form_user">
+
+    <form method='POST' action='/quizes/edit/<%=quizEdit.id%>'>
+
+        <div class="row_form">
+		    <label for="pregunta"> Pregunta: </label>
+		    <input type="text" id="pregunta" name="pregunta" value="<%= quizEdit.pregunta %>" size="30" />
+		</div>
+
+		<div class="row_form">
+		    <label for="respuesta"> Respuesta: </label>
+		    <input type="text" id="respuesta" name="respuesta" value="<%= quizEdit.respuesta %>" size="30" />
+		</div>
+
+        <input id="updateUser" class="submit" name="commit" type="submit" value="Guardar Cambios" />
+
+    </form>
+
+</div>

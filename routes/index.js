@@ -122,6 +122,27 @@ router.get('/api/quiz',
 	quizController.loadQuizesToFlux
 );
 
+// Elimina un Quiz.
+router.post('/quizes/delete/:quizid([0-9]+)',
+	sessionController.loginRequired,
+	sessionController.autologout,
+	quizController.destroy
+);
+
+// Enseña la vista para editar un quiz.
+router.get('/quizes/edit/:quizid([0-9]+)',
+	sessionController.autologout,
+	sessionController.loginRequired,
+	quizController.edit
+);
+
+// Edita un quiz.
+router.post('/users/edit/:quizid([0-9]+)',
+	sessionController.autologout,
+	sessionController.loginRequired,
+	quizController.update
+);
+
 
 /*********************************************************************/
 /*********************************************************************/

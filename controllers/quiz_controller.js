@@ -82,7 +82,8 @@ exports.create = function(req, res, next){
 		if(ids[j] === '0'){
 			var quiz = models.Quiz.build({
 				pregunta: preguntas[j],
-				respuesta: respuestas[j]
+				respuesta: respuestas[j],
+				UserId: req.session.user.id
 	        });
 			quiz.save()
 			.then(function(quiz){
@@ -93,9 +94,79 @@ exports.create = function(req, res, next){
 			});
 		}
 	}
-
 	res.redirect('/quizes');
 }
+
+
+/* Eliminar un Quiz (POST):
+ *
+ * Eliminamos el Quiz.
+ */
+exports.destroy = function(req, res, next){
+	console.log(req.params.quizid);
+
+	models.Quiz.find({where: {id: req.params.quizid}})
+	.then(function(quizParaEliminar){
+
+		// Eliminamos el quiz.
+		quizParaEliminar.destroy()
+		.then(function(){
+
+			console.log("Quiz eliminado con exito.");
+
+			// Volvemos a cargar los Quizes y los mostramos.
+			models.Quiz.findAll()
+			.then(function(quizes){
+				res.render('quizes/index', {
+					quizes: quizes
+				});
+			})
+			.catch(function(error){
+				console.log("Error:", error)
+			});
+		})
+		.catch(function(error){
+			console.log(error);
+		});
+	})
+	.catch(function(error){
+		console.log(error);
+	});
+}
+
+
+/* Editar un Quiz (GET):
+ *
+ * Para mostrar la vista de la ediccion debemos de buscar el quiz que queremos editar y pasarlo a la vista.
+ */
+ exports.edit = function (req, res, next) {
+
+ 	console.log("ENTRO EN EDIT");
+
+ 	// Buscamos el usuario a editar en la base de datos y sino lo encuentra capturamos el error.
+	models.Quiz.find({where: {id: req.params.quizid}})
+	.then(function(quizEdit){
+
+		res.render('quizes/edit', {
+			quizEdit: quizEdit
+		});
+
+	})
+	.catch(function(error){
+		console.log("Error:", error);
+	});
+
+ }
+
+
+/* Actualiza un Quiz (POST):
+ *
+ * Actualiza los valores de un Quiz.
+ */
+ exports.update = function (req, res, next) {
+
+ }
+
 
 /*******************************************************************/
 /*******************************************************************/

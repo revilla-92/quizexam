@@ -16,6 +16,9 @@ var sequelize = new Sequelize(null, null, null,
 var User = sequelize.import(path.join(__dirname,'user'));
 var Quiz = sequelize.import(path.join(__dirname,'quiz'));
 
+// Relaciones entre Quiz y User.
+Quiz.belongsTo(User);
+User.hasMany(Quiz);
 
 // Exportamos las clases de los distintos modelos.
 exports.User = User;
