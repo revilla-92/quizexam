@@ -1,5 +1,17 @@
 var models = require('../models');
 
+
+/*********************** Funciones Auxiliares ***********************/
+/********************************************************************/
+
+function isEmpty(value){
+	return (value == null || value.length === 0);
+}
+
+/********************************************************************/
+/********************************************************************/
+
+
 /****************************** Rutas ******************************/
 /*******************************************************************/
 
@@ -139,7 +151,7 @@ exports.destroy = function(req, res, next){
  *
  * Para mostrar la vista de la ediccion debemos de buscar el quiz que queremos editar y pasarlo a la vista.
  */
- exports.edit = function (req, res, next) {
+exports.edit = function (req, res, next) {
 
  	console.log("ENTRO EN EDIT");
 
@@ -156,16 +168,74 @@ exports.destroy = function(req, res, next){
 		console.log("Error:", error);
 	});
 
- }
+}
 
 
 /* Actualiza un Quiz (POST):
  *
  * Actualiza los valores de un Quiz.
  */
- exports.update = function (req, res, next) {
+exports.update = function (req, res, next) {
 
- }
+	if(isEmpty(req.body.pregunta) || isEmpty(req.body.respuesta)){
+
+		console.log('Se han dejado campos vacíos.');
+
+		req.flash('error', 'Todos los campos deben ser rellenados.');
+
+		models.Quiz.find({where: {id: req.params.quizid}})
+		.then(function(quizEdit){
+			res.render('quizes/edit', {
+				quizEdit: quizEdit
+			});
+		})
+		.catch(function(error){
+			console.log("Error:", error);
+		});
+
+		return;
+
+	} else {
+
+		models.Quiz.find({where: {id: req.params.quizid}})
+		.then(function(quizParaEliminar){
+			quizParaEliminar.destroy()
+			.then(function(){
+				console.log("Quiz en proceso de actualizarse");
+			})
+			.catch(function(error){
+				console.log(error);
+			});
+		})
+		.catch(function(error){
+			console.log("Error:", error);
+		});
+
+		var quiz = models.Quiz.build({
+			pregunta: req.body.pregunta,
+			respuesta: req.body.respuesta,
+			UserId: req.session.user.id
+        });
+
+        // Si no hay errores y el usuario no existe entonces lo guardamos.
+		quiz.save()
+		.then(function(user){
+
+			models.Quiz.findAll()
+			.then(function(quizes){
+				console.log('Quiz actualizado con éxito.');
+				req.flash('success', 'Quiz actualizado con éxito.');
+				res.redirect('/');
+			})
+			.catch(function(error){
+				console.log("Error:", error)
+			});
+		})
+		.catch(function(){
+			console.log("Error:", error);
+		});
+	}
+}
 
 
 /*******************************************************************/

@@ -236,7 +236,7 @@ exports.index = function (req, res, next) {
 		.catch(function(){
 			console.log("Error:", error);
 		});
-	} 	
+	}
 }
 
 /********************************************************************/

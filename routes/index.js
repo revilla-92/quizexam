@@ -137,7 +137,7 @@ router.get('/quizes/edit/:quizid([0-9]+)',
 );
 
 // Edita un quiz.
-router.post('/users/edit/:quizid([0-9]+)',
+router.post('/quizes/edit/:quizid([0-9]+)',
 	sessionController.autologout,
 	sessionController.loginRequired,
 	quizController.update
