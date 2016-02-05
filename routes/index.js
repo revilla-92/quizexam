@@ -117,6 +117,11 @@ router.get('/quizes',
 	quizController.index
 );
 
+// Cuando redenrizamos la vista con Flux también mandamos el estado 
+router.get('/api/quiz', 
+	quizController.loadQuizesToFlux
+);
+
 
 /*********************************************************************/
 /*********************************************************************/

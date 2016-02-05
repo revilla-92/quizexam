@@ -25753,6 +25753,26 @@ module.exports = {
 			type: Constants.ActionTypes.DELETE_QUIZ,
 			id: id
 		});
+	},
+	edit_Quiz: function edit_Quiz(id) {
+		QuizDispatcher.dispatch({
+			type: Constants.ActionTypes.EDIT_QUIZ,
+			id: id
+		});
+	},
+	update_Quiz: function update_Quiz(id, question, answer) {
+		QuizDispatcher.dispatch({
+			type: Constants.ActionTypes.UPDATE_QUIZ,
+			id: id,
+			question: question,
+			answer: answer
+		});
+	},
+	load_DB: function load_DB(data) {
+		QuizDispatcher.dispatch({
+			type: Constants.ActionTypes.LOAD_DB,
+			data: data
+		});
 	}
 };
 
@@ -25768,7 +25788,9 @@ var QuizStore = require('../stores/QuizStores');
 
 function getAppStateFromStore() {
 	return {
-		tableIsVisible: QuizStore.getTableIsVisible(),
+		id: QuizStore.getID(),
+		pregunta: QuizStore.getPregunta(),
+		respuesta: QuizStore.getRespuesta(),
 		numQuizes: QuizStore.getNumberOfQuizes(),
 		quizExam: QuizStore.getQuizExam()
 	};
@@ -25777,10 +25799,28 @@ function getAppStateFromStore() {
 var App = React.createClass({
 	displayName: 'App',
 
+	loadQuizesFromServer: function loadQuizesFromServer() {
+		$.ajax({
+			url: this.props.url,
+			dataType: 'json',
+			cache: false,
+			success: (function (data) {
+				this.setState({ data: data });
+			}).bind(this),
+			error: (function (xhr, status, err) {
+				console.error(this.props.url, status, err.toString());
+			}).bind(this)
+		});
+	},
+	loadDB: function loadDB() {
+		this.loadQuizesFromServer();
+		QuizActions.load_DB(this.state.data);
+	},
 	getInitialState: function getInitialState() {
 		return getAppStateFromStore();
 	},
 	componentDidMount: function componentDidMount() {
+		this.loadQuizesFromServer();
 		QuizStore.addChangeListener(this._onChange);
 	},
 	componentWillUnmount: function componentWillUnmount() {
@@ -25795,8 +25835,13 @@ var App = React.createClass({
 			'div',
 			null,
 			React.createElement(Cabecera, { numQuizes: this.state.numQuizes }),
-			React.createElement(Quiz, null),
-			React.createElement(Exam, { quizExam: this.state.quizExam, tableIsVisible: this.state.tableIsVisible, numQuizes: this.state.numQuizes })
+			React.createElement(Quiz, { id: this.state.id, pregunta: this.state.pregunta, respuesta: this.state.respuesta }),
+			React.createElement(
+				'button',
+				{ id: 'loadDB', type: 'submit', onClick: this.loadDB },
+				' Cargar BBDD '
+			),
+			React.createElement(Exam, { quizExam: this.state.quizExam, numQuizes: this.state.numQuizes })
 		);
 	}
 });
@@ -25844,61 +25889,31 @@ var Exam = React.createClass({
 	deleteQuestionClick: function deleteQuestionClick(id) {
 		QuizActions.delete_Quiz(id);
 	},
-
+	editQuestionClick: function editQuestionClick(id) {
+		QuizActions.edit_Quiz(id);
+	},
 	render: function render() {
 		var _this = this;
 
 		// Recogemos el array de dos dimensiones que contiene las preguntas y las respuestas.
 		var rows = this.props.quizExam;
 
-		if (this.props.tableIsVisible) {
+		if (this.props.numQuizes != 0) {
 
 			return React.createElement(
 				'div',
 				null,
 				React.createElement(
 					_fixedDataTable.Table,
-					{ id: 'tabla_Quiz', rowHeight: 50, rowsCount: rows.length, width: 1200, height: 600, headerHeight: 50 },
-					React.createElement(_fixedDataTable.Column, {
-						header: React.createElement(
-							_fixedDataTable.Cell,
-							null,
-							' Numero Pregunta '
-						),
-						cell: function (_ref) {
-							var rowIndex = _ref.rowIndex;
-							return React.createElement(
-								_fixedDataTable.Cell,
-								null,
-								rowIndex + 1
-							);
-						},
-						width: 100
-					}),
+					{ id: 'tabla_Quiz', rowHeight: 50, rowsCount: rows.length, width: 1180, height: 600, headerHeight: 50 },
 					React.createElement(_fixedDataTable.Column, {
 						header: React.createElement(
 							_fixedDataTable.Cell,
 							null,
 							' Pregunta '
 						),
-						cell: function (_ref2) {
-							var rowIndex = _ref2.rowIndex;
-							return React.createElement(
-								_fixedDataTable.Cell,
-								null,
-								rows[rowIndex][0]
-							);
-						},
-						width: 500
-					}),
-					React.createElement(_fixedDataTable.Column, {
-						header: React.createElement(
-							_fixedDataTable.Cell,
-							null,
-							' Respuesta '
-						),
-						cell: function (_ref3) {
-							var rowIndex = _ref3.rowIndex;
+						cell: function (_ref) {
+							var rowIndex = _ref.rowIndex;
 							return React.createElement(
 								_fixedDataTable.Cell,
 								null,
@@ -25911,10 +25926,26 @@ var Exam = React.createClass({
 						header: React.createElement(
 							_fixedDataTable.Cell,
 							null,
+							' Respuesta '
+						),
+						cell: function (_ref2) {
+							var rowIndex = _ref2.rowIndex;
+							return React.createElement(
+								_fixedDataTable.Cell,
+								null,
+								rows[rowIndex][2]
+							);
+						},
+						width: 500
+					}),
+					React.createElement(_fixedDataTable.Column, {
+						header: React.createElement(
+							_fixedDataTable.Cell,
+							null,
 							' Eliminar '
 						),
-						cell: function (_ref4) {
-							var rowIndex = _ref4.rowIndex;
+						cell: function (_ref3) {
+							var rowIndex = _ref3.rowIndex;
 							return React.createElement(
 								_fixedDataTable.Cell,
 								null,
@@ -25926,6 +25957,26 @@ var Exam = React.createClass({
 							);
 						},
 						width: 100
+					}),
+					React.createElement(_fixedDataTable.Column, {
+						header: React.createElement(
+							_fixedDataTable.Cell,
+							null,
+							' Editar '
+						),
+						cell: function (_ref4) {
+							var rowIndex = _ref4.rowIndex;
+							return React.createElement(
+								_fixedDataTable.Cell,
+								null,
+								React.createElement(
+									'button',
+									{ id: rowIndex + 1, onClick: _this.editQuestionClick },
+									' Editar Quiz '
+								)
+							);
+						},
+						width: 80
 					})
 				),
 				React.createElement(
@@ -25959,42 +26010,83 @@ var Quiz = React.createClass({
 	addQuestionClick: function addQuestionClick() {
 		QuizActions.add_Quiz(this.questionInput.value, this.answerInput.value);
 	},
+	updateQuestionClick: function updateQuestionClick() {
+		QuizActions.update_Quiz(this.props.id, this.questionInput.value, this.answerInput.value);
+	},
 	render: function render() {
 		var _this = this;
 
-		return React.createElement(
-			"form",
-			null,
-			React.createElement(
-				"div",
-				{ id: "pregunta_quiz" },
+		if (this.props.id >= 0) {
+
+			return React.createElement(
+				"form",
+				null,
 				React.createElement(
-					"label",
-					null,
-					" Pregunta: "
+					"div",
+					{ id: "pregunta_quiz" },
+					React.createElement(
+						"label",
+						null,
+						" Pregunta: "
+					),
+					React.createElement("input", { ref: function (ref) {
+							return _this.questionInput = ref;
+						}, id: "pregunta", value: this.props.pregunta })
 				),
-				React.createElement("input", { id: "pregunta", placeholder: "Pregunta", ref: function (ref) {
-						return _this.questionInput = ref;
-					} })
-			),
-			React.createElement(
-				"div",
-				{ id: "respuesta_quiz" },
 				React.createElement(
-					"label",
-					null,
-					" Respuesta: "
+					"div",
+					{ id: "respuesta_quiz" },
+					React.createElement(
+						"label",
+						null,
+						" Respuesta: "
+					),
+					React.createElement("input", { ref: function (ref) {
+							return _this.answerInput = ref;
+						}, id: "answer", value: this.props.respuesta })
 				),
-				React.createElement("input", { id: "answer", placeholder: "Respuesta", ref: function (ref) {
-						return _this.answerInput = ref;
-					} })
-			),
-			React.createElement(
-				"button",
-				{ id: "botonAddQuiz", type: "reset", onClick: this.addQuestionClick },
-				" Crear Quiz "
-			)
-		);
+				React.createElement(
+					"button",
+					{ id: "botonAddQuiz", type: "reset", onClick: this.updateQuestionClick },
+					" Update Quiz "
+				)
+			);
+		} else {
+
+			return React.createElement(
+				"form",
+				null,
+				React.createElement(
+					"div",
+					{ id: "pregunta_quiz" },
+					React.createElement(
+						"label",
+						null,
+						" Pregunta: "
+					),
+					React.createElement("input", { id: "pregunta", placeholder: "Pregunta", ref: function (ref) {
+							return _this.questionInput = ref;
+						} })
+				),
+				React.createElement(
+					"div",
+					{ id: "respuesta_quiz" },
+					React.createElement(
+						"label",
+						null,
+						" Respuesta: "
+					),
+					React.createElement("input", { id: "answer", placeholder: "Respuesta", ref: function (ref) {
+							return _this.answerInput = ref;
+						} })
+				),
+				React.createElement(
+					"button",
+					{ id: "botonAddQuiz", type: "reset", onClick: this.addQuestionClick },
+					" Crear Quiz "
+				)
+			);
+		}
 	}
 });
 
@@ -26006,7 +26098,10 @@ module.exports = Quiz;
 module.exports = {
 	ActionTypes: {
 		ADD_QUIZ: "ADD_QUIZ",
-		DELETE_QUIZ: "DELETE_QUIZ"
+		DELETE_QUIZ: "DELETE_QUIZ",
+		EDIT_QUIZ: "EDIT_QUIZ",
+		UPDATE_QUIZ: "UPDATE_QUIZ",
+		LOAD_DB: "LOAD_DB"
 	},
 	CHANGE_EVENT: 'CHANGE_EVENT'
 };
@@ -26023,7 +26118,7 @@ module.exports = new Dispatcher();
 
 var App = require("./components/App.jsx");
 
-ReactDOM.render(React.createElement(App, null), document.getElementById('contenedor'));
+ReactDOM.render(React.createElement(App, { url: "/api/quiz" }), document.getElementById('contenedor'));
 
 },{"./components/App.jsx":212}],219:[function(require,module,exports){
 'use strict';
@@ -26036,30 +26131,38 @@ var Constants = require('../constants/QuizConstants');
 // Variable para manejar las propiedades de la Cabecera.
 var numberOfQuizes = 0;
 
-// Habilitamos la vista de la tabla cuando se cree el primer elemento.
-var tableIsVisible = false;
-
 // Variable para manejar las preguntas y respuestas.
 var quizExam = [[]];
 
+// Variables para la edicion de quizes
+var id;
+var pregunta = "";
+var respuesta = "";
+
 /**
  * Funcion auxiliar para añadir la pregunta y respuesta al quiz.
- * Para ello pasamos como atributos (parametros) el texto de la pregunta y de la respuesta y el numero de la pregunta.
+ * Para ello pasamos como atributos (parametros) el texto de la 
+ * pregunta y de la respuesta y el numero de la pregunta.
  */
 function create(question, answer) {
-	quizExam.push([question, answer]);
+	quizExam.push([0, question, answer]);
 }
 
 var QuizStore = Object.assign({}, EventEmitter.prototype, {
-
 	getNumberOfQuizes: function getNumberOfQuizes() {
 		return numberOfQuizes;
 	},
 	getQuizExam: function getQuizExam() {
 		return quizExam;
 	},
-	getTableIsVisible: function getTableIsVisible() {
-		return tableIsVisible;
+	getID: function getID() {
+		return id;
+	},
+	getPregunta: function getPregunta() {
+		return pregunta;
+	},
+	getRespuesta: function getRespuesta() {
+		return respuesta;
 	},
 	addChangeListener: function addChangeListener(callback) {
 		this.on(Constants.CHANGE_EVENT, callback);
@@ -26078,14 +26181,8 @@ QuizDispatcher.register(function (payload) {
 
 		case Constants.ActionTypes.ADD_QUIZ:
 
-			// Traza para ver que entramos en el caso de crear.
-			console.log("CREAR");
-
 			// Actualizamos el numero de preguntas y reseteamos los inputs.
 			numberOfQuizes = numberOfQuizes + 1;
-
-			// Hacemos visible la tabla.
-			tableIsVisible = true;
 
 			// Añadimos la pregunta y la respuesta al quizesay.
 			create(payload.question, payload.answer);
@@ -26101,20 +26198,57 @@ QuizDispatcher.register(function (payload) {
 
 		case Constants.ActionTypes.DELETE_QUIZ:
 
-			// Traza para ver que entramos en el caso de eliminar.
-			console.log("ELIMINAR");
-
 			// Eliminamos el elemento seleccionado.
 			quizExam.splice(payload.id.target.id - 1, 1);
-
-			// Si ya no quedan mas preguntas, ocultamos la tabla.
-			if (quizExam.length === 0) {
-				tableIsVisible = false;
-			}
 
 			// Actualizamos el numero de preguntas.
 			numberOfQuizes = numberOfQuizes - 1;
 
+			// Emitimos el cambio y paramos el switch case.
+			QuizStore.emitChange();
+			break;
+
+		case Constants.ActionTypes.EDIT_QUIZ:
+
+			// Cogemos la pregunta y la respuesta a editar.
+			id = payload.id.target.id - 1;
+			pregunta = quizExam[payload.id.target.id - 1][1];
+			respuesta = quizExam[payload.id.target.id - 1][2];
+
+			// Emitimos el cambio y paramos el switch case.
+			QuizStore.emitChange();
+			break;
+
+		case Constants.ActionTypes.UPDATE_QUIZ:
+
+			// Actualizamos los valores.
+			quizExam[payload.id][1] = payload.question;
+			quizExam[payload.id][2] = payload.answer;
+
+			// Poniendo la id a -1 se vuelve a poner el boton de añadir pregunta.
+			id = -1;
+
+			// Emitimos el cambio y paramos el switch case.
+			QuizStore.emitChange();
+			break;
+
+		case Constants.ActionTypes.LOAD_DB:
+
+			// Cambiamos el numero de quizes al de las preguntas en la BBDD.
+			numberOfQuizes = payload.data.length;
+
+			// Borramos las preguntas anteriores.
+			quizExam = [[]];
+
+			// Eliminamos el primer elemento del array ya que no tiene longitud.
+			if (quizExam[0].length === 0) {
+				quizExam.shift();
+			}
+
+			// Cargamos el array de la BBDD.
+			quizExam = payload.data;
+
+			// Emitimos el cambio y paramos el switch case.
 			QuizStore.emitChange();
 			break;
 	}

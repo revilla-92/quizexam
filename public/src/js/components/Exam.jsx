@@ -7,31 +7,24 @@ var Exam = React.createClass({
 	deleteQuestionClick: function(id){
 		QuizActions.delete_Quiz(id);
 	},
-
+	editQuestionClick: function(id){
+		QuizActions.edit_Quiz(id);
+	},
 	render: function(){
 
 		// Recogemos el array de dos dimensiones que contiene las preguntas y las respuestas.
 		var rows = this.props.quizExam;
 
-		if(this.props.tableIsVisible){
+		if(this.props.numQuizes != 0){
 
 			return (
 				<div>
-					<Table id="tabla_Quiz" rowHeight={50} rowsCount={rows.length} width={1200} height={600} headerHeight={50}>
-					    <Column
-					    	header={<Cell> Numero Pregunta </Cell>}
-					    	cell={({rowIndex}) => (
-					    		<Cell>
-					    			{rowIndex + 1}
-					    		</Cell>
-					    	)}
-					    	width={100}
-					    />
+					<Table id="tabla_Quiz" rowHeight={50} rowsCount={rows.length} width={1180} height={600} headerHeight={50}>
 					    <Column
 					    	header={<Cell> Pregunta </Cell>}
 					    	cell={({rowIndex}) => (
 					    		<Cell>
-					    			{rows[rowIndex][0]}
+					    			{rows[rowIndex][1]}
 					    		</Cell>
 					    	)}
 					    	width={500}
@@ -40,7 +33,7 @@ var Exam = React.createClass({
 					    	header={<Cell> Respuesta </Cell>}
 					    	cell={({rowIndex}) => (
 					    		<Cell>
-					    			{rows[rowIndex][1]}
+					    			{rows[rowIndex][2]}
 					    		</Cell>
 					    	)}
 					    	width={500}
@@ -53,6 +46,15 @@ var Exam = React.createClass({
 					    		</Cell>
 					    	)}
 					    	width={100}
+					    />
+					    <Column
+					    	header={<Cell> Editar </Cell>}
+					    	cell={({rowIndex}) => (
+					    		<Cell>
+					    			<button id={rowIndex + 1} onClick={this.editQuestionClick}> Editar Quiz </button>
+					    		</Cell>
+					    	)}
+					    	width={80}
 					    />
 					</Table>
 

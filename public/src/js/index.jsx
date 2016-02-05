@@ -1,6 +1,7 @@
 const App = require("./components/App.jsx");
 
 ReactDOM.render(
-	<App />,
+	<App url="/api/quiz" />,
 	document.getElementById('contenedor')
 );
+

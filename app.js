@@ -31,7 +31,7 @@ app.use(favicon(__dirname + '/public/favicon.ico'));
 // Indicamos los middleware que vamos a emplear.
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser('Quiz Exam'));
 app.use(session({resave: false, saveUninitialized: false, secret: "whatever"}));
 app.use(methodOverride('_method'));
@@ -47,7 +47,6 @@ app.use(function(req, res, next) {
     next();
 
 });
-
 
 // Indicamos la página por defecto que se mostrara al arrancar la aplicacion.
 app.use('/', routes);

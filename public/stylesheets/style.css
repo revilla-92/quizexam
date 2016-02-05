@@ -152,6 +152,12 @@ form{
 	float: right;
 }
 
+#loadDB{
+	position: absolute;
+	left: 49.1%;
+	bottom: 45%;
+}
+
 article{
 	display: inline-block;
 	margin-left: auto;
@@ -160,6 +166,7 @@ article{
 
 table{
 	float: left;
+	clear: both;
 	width: 100%;
 }
 
@@ -217,7 +224,7 @@ th{
 #botonAddQuiz{
 	margin-left: 70%;
 	float: left;
-	margin-bottom: 25px;
+	margin-bottom: 65px;
 }
 
 #tabla_Quiz{
@@ -229,6 +236,7 @@ th{
 	clear: both;
 	float: left;
 	font-size: 5px;
+	margin-top: 70px;
 }
 
 #formUploadQuizes{

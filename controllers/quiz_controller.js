@@ -28,6 +28,23 @@ exports.index = function(req, res, next) {
 }
 
 
+exports.loadQuizesToFlux = function(req, res, next) {
+
+	models.Quiz.findAll()
+	.map(function(quiz){
+		return [quiz.id, quiz.pregunta, quiz.respuesta];
+	})
+	.then(function(quizes){
+		console.log(quizes);
+		res.send(quizes);
+	})
+	.catch(function(error){
+		console.log("Error:", error);
+		res.send([]);		
+	});
+}
+
+
 /* 
  * Creacion de los Quizes guardandolos en la BBDD.
  */
