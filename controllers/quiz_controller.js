@@ -27,7 +27,9 @@ exports.index = function(req, res, next) {
 	});
 }
 
-
+/* 
+ * Carga BBDD en la aplicacion de Flux.
+ */
 exports.loadQuizesToFlux = function(req, res, next) {
 
 	models.Quiz.findAll()
@@ -55,8 +57,10 @@ exports.create = function(req, res, next){
 	var numQuizes = req.body.numQuizes;
 
 	// Creamos los arrays donde almacenaremos por separados las preguntas y las respuestas.
+	var ids = new Array(numQuizes);
 	var preguntas = new Array(numQuizes);
 	var respuestas = new Array(numQuizes);
+
 
 	// Separamos quizes en un array de tal forma que las pares son preguntas y las impares respuestas.
 	var quizesArray = quizes.split(",");
@@ -65,31 +69,32 @@ exports.create = function(req, res, next){
 	var n = 0;
 
 	// Creamos a partir del array anterior en otro array que son por separado preguntas y respuestas.
-	for (i = 0; i < 2 * numQuizes; i = i + 2){
-		preguntas[n] = quizesArray[i];
-		respuestas[n] = quizesArray[i+1];
+	for (i = 0; i < 3 * numQuizes; i = i + 3){
+		ids[n] = quizesArray[i]
+		preguntas[n] = quizesArray[i+1];
+		respuestas[n] = quizesArray[i+2];
 		n++;
 	}
 
 	// Ahora vamos recorriendo ambos arrays e introduciendo dichos datos en la BBDD.
-	for (j = 0; j < numQuizes; j++){2
+	for (j = 0; j < numQuizes; j++){
 
-		var quiz = models.Quiz.build({
-			pregunta: preguntas[j],
-			respuesta: respuestas[j]
-        });
-
-		quiz.save()
-		.then(function(quiz){
-			console.log('Quiz creado con exito. Pregunta: ' + quiz.pregunta + ' y la Respuesta: ' + quiz.respuesta + ' creado con exito.');
-		})
-		.catch(function(error){
-			console.log('Error:', error);
-		});
+		if(ids[j] === '0'){
+			var quiz = models.Quiz.build({
+				pregunta: preguntas[j],
+				respuesta: respuestas[j]
+	        });
+			quiz.save()
+			.then(function(quiz){
+				console.log('Quiz creado con exito. Pregunta: ' +quiz.pregunta+ ' y la Respuesta: ' +quiz.respuesta+ ' creado con exito.');
+			})
+			.catch(function(error){
+				console.log('Error:', error);
+			});
+		}
 	}
 
 	res.redirect('/quizes');
-
 }
 
 /*******************************************************************/
